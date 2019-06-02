@@ -27,7 +27,7 @@ class Panel extends JPanel
 	/**
 	 * Create the panel.
 	 */
-	Panel(String panelName)
+	Panel(String panelName, String dirRoot)
 	{
 		setLayout(new BorderLayout(0, 0));
 		
@@ -42,7 +42,7 @@ class Panel extends JPanel
 		scrollPane.setViewportBorder(null);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		JTree tree = new JTree(SSH.connection.getDirectories(""));
+		JTree tree = new JTree(SSH.connection.getDirectories(dirRoot));
 		tree.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		scrollPane.setViewportView(tree);
 		

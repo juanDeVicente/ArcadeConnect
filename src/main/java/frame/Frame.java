@@ -62,10 +62,10 @@ public class Frame extends JFrame
 		contentPane.add(panels, gbc_panels);
 		panels.setLayout(new GridLayout(1, 2, 0, 0));
 
-		JPanel romsPanel = new Panel("ROMS");
+		JPanel romsPanel = new Panel("ROMS", "/home/pi/RetroPie/roms");
 		panels.add(romsPanel);
 
-		JPanel biosPanel = new Panel("BIOS");
+		JPanel biosPanel = new Panel("BIOS", "/home/pi/RetroPie/BIOS");
 		panels.add(biosPanel);
 
 		JButton btnUploadContent = new JButton("Upload content");
