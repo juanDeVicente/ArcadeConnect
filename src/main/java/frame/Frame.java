@@ -68,12 +68,12 @@ public class Frame extends JFrame
 
 		JButton btnUploadContent = new JButton("Upload content");
 		btnUploadContent.addActionListener
-				(
-						e ->
-						{
+		(
+				e ->
+				{
 
-						}
-				);
+				}
+		);
 		GridBagConstraints gbc_btnUploadContent = new GridBagConstraints();
 		gbc_btnUploadContent.gridwidth = 2;
 		gbc_btnUploadContent.fill = GridBagConstraints.HORIZONTAL;
@@ -92,81 +92,81 @@ public class Frame extends JFrame
 			}
 		});
 		this.addWindowListener
-				(
-						new WindowListener()
+		(
+				new WindowListener()
+				{
+					@Override
+					public void windowClosing(WindowEvent e)
+					{
+						if ((e.getNewState() & Frame.MAXIMIZED_BOTH) != 0)
 						{
-							@Override
-							public void windowClosing(WindowEvent e)
-							{
-								if ((e.getNewState() & Frame.MAXIMIZED_BOTH) != 0)
-								{
-									Rectangle bounds = Frame.this.getBounds();
-									Properties.values.set("width", bounds.width);
-									Properties.values.set("height", bounds.height);
-								}
-								Properties.values.save();
-							}
-
-							@Override
-							public void windowIconified(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public void windowDeiconified(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public void windowActivated(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-
-							}
-
-							@Override
-							public void windowClosed(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-
-							}
-
-							@Override
-							public void windowDeactivated(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-
-							}
-
-							@Override
-							public void windowOpened(WindowEvent e)
-							{
-								// TODO Auto-generated method stub
-
-							}
+							Rectangle bounds = Frame.this.getBounds();
+							Properties.values.set("width", bounds.width);
+							Properties.values.set("height", bounds.height);
 						}
-				);
+						Properties.values.save();
+					}
+
+					@Override
+					public void windowIconified(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void windowDeiconified(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void windowActivated(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void windowClosed(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void windowDeactivated(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void windowOpened(WindowEvent e)
+					{
+						// TODO Auto-generated method stub
+
+					}
+				}
+		);
 		this.addWindowStateListener
-				(
-						e ->
-						{
-							int oldState = e.getOldState();
-							int newState = e.getNewState();
+		(
+				e ->
+				{
+					int oldState = e.getOldState();
+					int newState = e.getNewState();
 
-							if (((oldState & Frame.MAXIMIZED_BOTH) == 0 && (newState & Frame.MAXIMIZED_BOTH) != 0))
-							{
-								Rectangle bounds = Frame.this.getBounds();
-								Frame.this.changeSize(bounds.width, bounds.height);
-								Properties.values.set("maximized", true);
-							} else if ((oldState & Frame.MAXIMIZED_BOTH) != 0 && (newState & Frame.MAXIMIZED_BOTH) == 0)
-							{
-								Frame.this.changeSize((Integer) Properties.values.get("width"), (Integer) Properties.values.get("height"));
-								Properties.values.set("maximized", false);
-							}
-						}
-				);
+					if (((oldState & Frame.MAXIMIZED_BOTH) == 0 && (newState & Frame.MAXIMIZED_BOTH) != 0))
+					{
+						Rectangle bounds = Frame.this.getBounds();
+						Frame.this.changeSize(bounds.width, bounds.height);
+						Properties.values.set("maximized", true);
+					} else if ((oldState & Frame.MAXIMIZED_BOTH) != 0 && (newState & Frame.MAXIMIZED_BOTH) == 0)
+					{
+						Frame.this.changeSize((Integer) Properties.values.get("width"), (Integer) Properties.values.get("height"));
+						Properties.values.set("maximized", false);
+					}
+				}
+		);
 	}
 
 	private void changeSize(int width, int height)
