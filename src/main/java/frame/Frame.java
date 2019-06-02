@@ -25,6 +25,7 @@ public class Frame extends JFrame
 	private static final long serialVersionUID = -7692293339993053523L;
 	private JPanel contentPane;
 	private GridBagLayout gbl_contentPane;
+	private boolean maximized = false;
 
 	/**
 	 * Create the frame.
@@ -39,6 +40,7 @@ public class Frame extends JFrame
 			this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 			this.setVisible(true);
 			this.setVisible(false);
+			this.maximized = true;
 		}
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -98,7 +100,7 @@ public class Frame extends JFrame
 				@Override
 				public void windowClosing(WindowEvent e)
 				{
-					if ((e.getNewState() & Frame.MAXIMIZED_BOTH) != 0)
+					if (!Frame.this.maximized)
 					{
 						Rectangle bounds = Frame.this.getBounds();
 						Properties.values.set("width", bounds.width);
@@ -160,10 +162,15 @@ public class Frame extends JFrame
 					Rectangle bounds = Frame.this.getBounds();
 					Frame.this.changeSize(bounds.width, bounds.height);
 					Properties.values.set("maximized", true);
+					this.maximized = true;
 				} else if ((oldState & Frame.MAXIMIZED_BOTH) != 0 && (newState & Frame.MAXIMIZED_BOTH) == 0)
 				{
 					Frame.this.changeSize((Integer) Properties.values.get("width"), (Integer) Properties.values.get("height"));
 					Properties.values.set("maximized", false);
+					Rectangle bounds = Frame.this.getBounds();
+					Properties.values.set("width", bounds.width);
+					Properties.values.set("height", bounds.height);
+					this.maximized = false;
 				}
 			}
 		);
@@ -174,7 +181,7 @@ public class Frame extends JFrame
 		this.setSize(width, height);
 		int sizeX = width / 4;
 		int sizeY = height / 4;
-		gbl_contentPane.columnWidths = new int[]{sizeX, sizeX, sizeX, sizeX - 20, 0}; //-20 is very important, dont touch it
-		gbl_contentPane.rowHeights = new int[]{sizeY, sizeY, sizeY, sizeY, 0};
+		this.gbl_contentPane.columnWidths = new int[]{sizeX, sizeX, sizeX, sizeX - 20, 0}; //-20 is very important, dont touch it
+		this.gbl_contentPane.rowHeights = new int[]{sizeY, sizeY, sizeY, sizeY, 0};
 	}
 }
