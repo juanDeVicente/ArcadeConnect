@@ -2,7 +2,9 @@ package ssh;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
+import net.schmizz.sshj.connection.ConnectionException;
 import net.schmizz.sshj.connection.channel.direct.Session;
+import net.schmizz.sshj.transport.TransportException;
 import properties.Properties;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,13 +19,13 @@ public class SSH
 
 	private SSH()
 	{
-		SSHClient ssh = new SSHClient();
+		this.sshClient = new SSHClient();
 		try
 		{
-			ssh.loadKnownHosts();
-			ssh.addHostKeyVerifier("3c:7e:e2:dc:2d:c1:f2:30:6a:81:4d:b6:63:eb:82:a3");
-			ssh.connect(Properties.values.get("ip-address").toString(), 22);
-			ssh.authPassword(Properties.values.get("username").toString(), Properties.values.get("password").toString());
+			this.sshClient.loadKnownHosts();
+			this.sshClient.addHostKeyVerifier("3c:7e:e2:dc:2d:c1:f2:30:6a:81:4d:b6:63:eb:82:a3");
+			this.sshClient.connect(Properties.values.get("ip-address").toString(), 22);
+			this.sshClient.authPassword(Properties.values.get("username").toString(), Properties.values.get("password").toString());
 		}
 		catch (IOException e)
 		{
@@ -43,7 +45,26 @@ public class SSH
 
 	public DefaultMutableTreeNode getDirectories(String root)
 	{
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Hola");
+		String[] split = root.split("/");
+		String folderName = split[split.length - 1];
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode(folderName.toLowerCase());
+
+		try(Session session = sshClient.startSession())
+		{
+			Session.Command cmd = session.exec("ls -a " + root);
+			String[] data = IOUtils.readFully(cmd.getInputStream()).toString().split("\n");
+
+			int i = 0;
+			for (String d :data)
+			{
+				if (!d.equals(".") && !d.equals(".."))
+					top.add(new DefaultMutableTreeNode(d.toLowerCase()));
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 
 		return top;
 	}
