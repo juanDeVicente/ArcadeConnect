@@ -1,5 +1,7 @@
 package frame;
 
+import ssh.SSH;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -40,7 +42,7 @@ class Panel extends JPanel
 		scrollPane.setViewportBorder(null);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		JTree tree = new JTree();
+		JTree tree = new JTree(SSH.connection.getDirectories(""));
 		tree.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		scrollPane.setViewportView(tree);
 		
