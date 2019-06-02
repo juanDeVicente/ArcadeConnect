@@ -64,7 +64,19 @@ public class Properties
 		this.set("maximized", false);
 		this.set("width", 1600);
 		this.set("height", 900);
-		if (!Files.exists(Paths.get("data/properties.json")))
+		if (!Files.exists(Paths.get("data/")))
+		{
+			try
+			{
+				Files.createDirectory(Paths.get("data/"));
+				Files.createFile(Paths.get("data/properties.json"));
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if (!Files.exists(Paths.get("data/properties.json")))
 		{
 			try
 			{
