@@ -27,7 +27,6 @@ class Panel extends JPanel
 	 */
 	Panel(String panelName)
 	{
-		setBorder(null);
 		setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblname = new JLabel(panelName);
