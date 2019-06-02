@@ -2,9 +2,7 @@ package ssh;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
-import net.schmizz.sshj.connection.ConnectionException;
 import net.schmizz.sshj.connection.channel.direct.Session;
-import net.schmizz.sshj.transport.TransportException;
 import properties.Properties;
 
 import javax.swing.tree.DefaultMutableTreeNode;
