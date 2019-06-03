@@ -41,7 +41,7 @@ public class Properties
 			return this.get(key);
 		}
 	}
-	public void set(String key, Object value)
+	public void put(String key, Object value)
 	{
 		this.propertiesObject.put(key, value);
 	}
@@ -58,12 +58,19 @@ public class Properties
 		}
 	}
 
+	public String getFolderOfExtension(String extension)
+	{
+		JSONObject extensions = this.propertiesObject.getJSONObject("extensions");
+		System.out.println(extensions.toString());
+		return this.propertiesObject.getJSONObject("extensions").get("." + extension).toString();
+	}
+
 	private void createDefaultProperties()
 	{
 		this.propertiesObject = new JSONObject();
-		this.set("maximized", false);
-		this.set("width", 1600);
-		this.set("height", 900);
+		this.put("maximized", false);
+		this.put("width", 1600);
+		this.put("height", 900);
 		if (!Files.exists(Paths.get("data/")))
 		{
 			try
