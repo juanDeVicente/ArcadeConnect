@@ -1,6 +1,9 @@
 package frame;
 
+import frame.fileManager.FileManagerBIOS;
+import frame.fileManager.FileManagerROMS;
 import properties.Properties;
+import ssh.SSH;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -62,18 +65,18 @@ public class Frame extends JFrame
 		contentPane.add(panels, gbc_panels);
 		panels.setLayout(new GridLayout(1, 2, 0, 0));
 
-		JPanel romsPanel = new Panel("ROMS", "/home/pi/RetroPie/roms");
+		Panel romsPanel = new Panel("ROMS", "/home/pi/RetroPie/roms", new FileManagerROMS());
 		panels.add(romsPanel);
 
-		JPanel biosPanel = new Panel("BIOS", "/home/pi/RetroPie/BIOS");
+		Panel biosPanel = new Panel("BIOS", "/home/pi/RetroPie/BIOS", new FileManagerBIOS());
 		panels.add(biosPanel);
 
-		JButton btnUploadContent = new JButton("Upload content");
-		btnUploadContent.addActionListener
+		JButton btnApplyChanges = new JButton("Apply changes");
+		btnApplyChanges.addActionListener
 		(
 			e ->
 			{
-
+				SSH.connection.restartArcade();
 			}
 		);
 		GridBagConstraints gbc_btnUploadContent = new GridBagConstraints();
@@ -82,7 +85,7 @@ public class Frame extends JFrame
 		gbc_btnUploadContent.anchor = GridBagConstraints.NORTH;
 		gbc_btnUploadContent.gridx = 1;
 		gbc_btnUploadContent.gridy = 3;
-		contentPane.add(btnUploadContent, gbc_btnUploadContent);
+		contentPane.add(btnApplyChanges, gbc_btnUploadContent);
 
 		this.addComponentListener(new ComponentAdapter()
 		{
@@ -103,10 +106,11 @@ public class Frame extends JFrame
 					if (!Frame.this.maximized)
 					{
 						Rectangle bounds = Frame.this.getBounds();
-						Properties.values.set("width", bounds.width);
-						Properties.values.set("height", bounds.height);
+						Properties.values.put("width", bounds.width);
+						Properties.values.put("height", bounds.height);
 					}
 					Properties.values.save();
+					SSH.connection.closeClient();
 				}
 
 				@Override
@@ -161,15 +165,16 @@ public class Frame extends JFrame
 				{
 					Rectangle bounds = Frame.this.getBounds();
 					Frame.this.changeSize(bounds.width, bounds.height);
-					Properties.values.set("maximized", true);
+					Properties.values.put("maximized", true);
 					this.maximized = true;
-				} else if ((oldState & Frame.MAXIMIZED_BOTH) != 0 && (newState & Frame.MAXIMIZED_BOTH) == 0)
+				}
+				else if ((oldState & Frame.MAXIMIZED_BOTH) != 0 && (newState & Frame.MAXIMIZED_BOTH) == 0)
 				{
 					Frame.this.changeSize((Integer) Properties.values.get("width"), (Integer) Properties.values.get("height"));
-					Properties.values.set("maximized", false);
+					Properties.values.put("maximized", false);
 					Rectangle bounds = Frame.this.getBounds();
-					Properties.values.set("width", bounds.width);
-					Properties.values.set("height", bounds.height);
+					Properties.values.put("width", bounds.width);
+					Properties.values.put("height", bounds.height);
 					this.maximized = false;
 				}
 			}
